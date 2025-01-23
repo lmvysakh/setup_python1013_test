@@ -7,13 +7,9 @@ jobs:
   not_working:
     runs-on: ubuntu-latest
     container:
-      image: python:3.10-slim
+      image: python:3.10
     steps:
-     - name: Install GLIBC
-       run: |
-          apt-get update
-          apt-get install -y libc6
-     - uses: actions/setup-python@v5
-       with:
+      - uses: actions/setup-python@v5
+        with:
           python-version: "3.10"
-     - run: python
+      - run: python
