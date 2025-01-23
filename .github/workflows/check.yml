@@ -9,7 +9,11 @@ jobs:
     container:
       image: python:3.10-slim
     steps:
-      - uses: actions/setup-python@v5
-        with:
+     - name: Install GLIBC
+       run: |
+          apt-get update
+          apt-get install -y libc6
+     - uses: actions/setup-python@v5
+       with:
           python-version: "3.10"
-      - run: python
+     - run: python
