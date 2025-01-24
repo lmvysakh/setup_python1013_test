@@ -1,15 +1,26 @@
-name: Debug
+name: Test GLIBC Issue
 on:
   workflow_dispatch:
   push:
 
 jobs:
-  not_working:
+  check_glibc_issue:
     runs-on: ubuntu-latest
     container:
-      image: python:3.10
+      image: my-python-app:latest # Use the custom Docker image
     steps:
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      - run: python
+
+      - name: Check Python version
+        run: python --version
+
+      - name: Run a simple Python script
+        run: |
+          echo 'print("Hello, World!")' > hello.py
+          python hello.py
