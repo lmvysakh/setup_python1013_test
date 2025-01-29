@@ -1,0 +1,82 @@
+name: Test Different Docker Images
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test_python_3_10_slim:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10-slim
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install GLIBC
+        run: |
+          apt-get update
+          apt-get install -y libc6
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Check Python version
+        run: python --version
+
+      - name: Run a simple Python script
+        run: |
+          echo 'print("Hello, World!")' > hello.py
+          python hello.py
+
+  test_python_3_10:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install GLIBC
+        run: |
+          apt-get update
+          apt-get install -y libc6
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Check Python version
+        run: python --version
+
+      - name: Run a simple Python script
+        run: |
+          echo 'print("Hello, World!")' > hello.py
+          python hello.py
+
+  test_ubuntu_latest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3.10 python3.10-venv python3.10-dev
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Check Python version
+        run: python --version
+
+      - name: Run a simple Python script
+        run: |
+          echo 'print("Hello, World!")' > hello.py
+          python hello.py
