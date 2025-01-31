@@ -10,13 +10,10 @@ jobs:
     container:
       image: python:3.10-slim
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
       - name: Install Dependencies
         run: |
           apt-get update
-          apt-get install -y wget
+          apt-get install -y wget build-essential
 
       - name: Download and Install GLIBC
         run: |
@@ -33,13 +30,15 @@ jobs:
         run: |
           echo "/opt/glibc-2.38/lib" > /etc/ld.so.conf.d/glibc-2.38.conf
           ldconfig
+        env:
+          LD_LIBRARY_PATH: /opt/glibc-2.38/lib:$LD_LIBRARY_PATH
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
         env:
           LD_LIBRARY_PATH: /opt/glibc-2.38/lib:$LD_LIBRARY_PATH
-
+      
       - name: Check Python version
         run: python --version
 
