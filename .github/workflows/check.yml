@@ -1,4 +1,5 @@
 
+
 name: Debug
 on:
   workflow_dispatch:
@@ -6,11 +7,15 @@ on:
 
 jobs:
   not_working:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     container:
       image: python:3.10-slim
     steps:
-      - uses: actions/setup-python@v5
-        with:
+     - name: Install GLIBC
+       run: |
+          apt-get update
+          apt-get install -y libc6
+     - uses: actions/setup-python@v5
+       with:
           python-version: "3.10"
-      - run: python
+     - run: python
