@@ -6,15 +6,14 @@ on:
 
 jobs:
   not_working:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
-      image: ubuntu:latest
+      image: python:3.10-slim
     steps:
       - name: Install Dependencies
         run: |
           apt-get update
           apt-get install -y wget build-essential gawk bison
-
       - name: Download and Install GLIBC
         run: |
           wget http://ftp.gnu.org/gnu/libc/glibc-2.38.tar.gz
@@ -25,7 +24,6 @@ jobs:
           ../configure --prefix=/opt/glibc-2.38
           make -j4
           make install
-
       - name: Set GLIBC Path
         run: |
           echo "/opt/glibc-2.38/lib" > /etc/ld.so.conf.d/glibc-2.38.conf
@@ -33,13 +31,12 @@ jobs:
         env:
           LD_LIBRARY_PATH: /opt/glibc-2.38/lib:$LD_LIBRARY_PATH
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
         env:
           LD_LIBRARY_PATH: /opt/glibc-2.38/lib:$LD_LIBRARY_PATH
-
+      
       - name: Check Python version
         run: python --version
 
