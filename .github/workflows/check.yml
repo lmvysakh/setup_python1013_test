@@ -1,4 +1,3 @@
-
 name: Debug
 
 on:
@@ -14,7 +13,8 @@ jobs:
       - name: Install Dependencies
         run: |
           apt-get update
-          apt-get install -y wget build-essential
+          apt-get install -y wget build-essential gawk bison
+
       - name: Download and Install GLIBC
         run: |
           wget http://ftp.gnu.org/gnu/libc/glibc-2.38.tar.gz
@@ -25,6 +25,7 @@ jobs:
           ../configure --prefix=/opt/glibc-2.38
           make -j4
           make install
+
       - name: Set GLIBC Path
         run: |
           echo "/opt/glibc-2.38/lib" > /etc/ld.so.conf.d/glibc-2.38.conf
