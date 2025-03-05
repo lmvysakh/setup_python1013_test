@@ -1,46 +1,15 @@
 name: Debug
-
 on:
   workflow_dispatch:
   push:
 
 jobs:
   not_working:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     container:
       image: python:3.10-slim
     steps:
-      - name: Install Dependencies
-        run: |
-          apt-get update
-          apt-get install -y wget build-essential gawk bison
-      - name: Download and Install GLIBC
-        run: |
-          wget http://ftp.gnu.org/gnu/libc/glibc-2.38.tar.gz
-          tar -zxvf glibc-2.38.tar.gz
-          cd glibc-2.38
-          mkdir build
-          cd build
-          ../configure --prefix=/opt/glibc-2.38
-          make -j4
-          make install
-      - name: Set GLIBC Path
-        run: |
-          echo "/opt/glibc-2.38/lib" > /etc/ld.so.conf.d/glibc-2.38.conf
-          ldconfig
-        env:
-          LD_LIBRARY_PATH: /opt/glibc-2.38/lib:$LD_LIBRARY_PATH
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-        env:
-          LD_LIBRARY_PATH: /opt/glibc-2.38/lib:$LD_LIBRARY_PATH
-      
-      - name: Check Python version
-        run: python --version
-
-      - name: Run a simple Python script
-        run: |
-          echo 'print("Hello, World!")' > hello.py
-          python hello.py
+      - run: python
